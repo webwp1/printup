@@ -83,49 +83,53 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] font-sans selection:bg-indigo-500 selection:text-white text-zinc-900">
-      {/* Modern Full-Width Navigation */}
-      <nav className="fixed w-full z-50 top-0 bg-white/90 backdrop-blur-xl border-b border-zinc-200/80 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex justify-between items-center">
+      {/* Modern Floating Pill Navigation */}
+      <div className="fixed w-full z-50 top-4 px-4 sm:px-6 lg:px-8 pointer-events-none">
+        <nav className="max-w-7xl mx-auto bg-white/80 backdrop-blur-2xl border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full px-4 sm:px-6 h-16 sm:h-20 flex justify-between items-center pointer-events-auto transition-all duration-300">
           <div className="flex-shrink-0 flex items-center">
             <img 
               src="https://lh3.googleusercontent.com/d/1eR0l1OLGVqhNxwRYDLMouGSFq1HouRVa" 
               alt="PrintUp Logo" 
-              className="h-12 sm:h-16 w-auto object-contain scale-110 origin-left drop-shadow-sm"
+              className="h-10 sm:h-14 w-auto object-contain scale-110 origin-left drop-shadow-sm"
               referrerPolicy="no-referrer"
             />
           </div>
           
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-2">
-            <a href="#sluzby" className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-full transition-all">Služby</a>
-            <a href="#cenik" className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-full transition-all">Ceník</a>
-            <a href="#vyhody" className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-full transition-all">Proč my</a>
-            <a href="#kontakt" className="ml-2 px-7 py-2.5 bg-zinc-900 text-white text-sm font-bold rounded-full hover:bg-indigo-600 transition-all shadow-md">
+          <div className="hidden md:flex items-center space-x-1 bg-zinc-100/50 p-1.5 rounded-full border border-zinc-200/50">
+            <a href="#sluzby" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">Služby</a>
+            <a href="#cenik" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">Ceník</a>
+            <a href="#vyhody" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">Proč my</a>
+          </div>
+
+          <div className="hidden md:flex items-center">
+            <a href="#kontakt" className="px-7 py-2.5 bg-zinc-900 text-white text-sm font-bold rounded-full hover:bg-indigo-600 hover:scale-105 transition-all shadow-lg shadow-zinc-900/20">
               Poptat tisk
             </a>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-zinc-900 p-2 hover:bg-zinc-100 rounded-full transition-colors">
-              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-zinc-900 p-2 bg-zinc-100 hover:bg-zinc-200 rounded-full transition-colors">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
-        </div>
+        </nav>
 
         {/* Mobile Nav Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-zinc-200/80 bg-white/95 backdrop-blur-xl px-4 pt-2 pb-6 space-y-2 shadow-2xl absolute w-full">
+          <div className="md:hidden mt-4 bg-white/95 backdrop-blur-2xl border border-white/50 p-4 rounded-[2rem] shadow-2xl pointer-events-auto flex flex-col gap-2 max-w-7xl mx-auto">
             <a href="#sluzby" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">Služby</a>
             <a href="#cenik" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">Ceník</a>
             <a href="#vyhody" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">Proč my</a>
-            <a href="#kontakt" onClick={() => setIsMenuOpen(false)} className="block px-4 py-4 text-base font-bold bg-zinc-900 text-white text-center rounded-2xl mt-4 hover:bg-indigo-600 transition-colors">Kontakt</a>
+            <a href="#kontakt" onClick={() => setIsMenuOpen(false)} className="block px-4 py-4 text-base font-bold bg-zinc-900 text-white text-center rounded-2xl mt-2 hover:bg-indigo-600 transition-colors shadow-lg">Kontakt</a>
           </div>
         )}
-      </nav>
+      </div>
 
       {/* Modern Hero Section */}
-      <section className="relative pt-40 pb-20 lg:pt-56 lg:pb-32 overflow-hidden bg-white">
+      <section className="relative pt-48 pb-20 lg:pt-64 lg:pb-32 overflow-hidden bg-[#FAFAFA]">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/20 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute inset-0 bg-grid-pattern [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -149,10 +153,10 @@ export default function App() {
               Kvalitně, rychle a s nekompromisním důrazem na detail.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 items-center">
-              <a href="#kontakt" className="w-full sm:w-auto px-8 py-4 bg-zinc-900 text-white font-semibold rounded-full hover:bg-indigo-600 transition-all duration-300 flex items-center justify-center gap-2 text-lg">
+              <a href="#kontakt" className="w-full sm:w-auto px-8 py-4 bg-zinc-900 text-white font-bold rounded-full hover:bg-indigo-600 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-lg shadow-xl shadow-zinc-900/20">
                 Nezávazná poptávka <ArrowRight size={20} />
               </a>
-              <a href="#cenik" className="w-full sm:w-auto px-8 py-4 bg-white text-zinc-900 font-semibold rounded-full hover:bg-zinc-50 transition-all border border-zinc-200 flex items-center justify-center text-lg">
+              <a href="#cenik" className="w-full sm:w-auto px-8 py-4 bg-white text-zinc-900 font-bold rounded-full hover:bg-zinc-50 hover:scale-105 transition-all duration-300 border border-zinc-200 flex items-center justify-center text-lg shadow-sm">
                 Prohlédnout produkty
               </a>
             </div>
@@ -180,9 +184,9 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`p-8 rounded-3xl bg-white border border-zinc-200 hover:border-indigo-600 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group ${service.colSpan}`}
+                className={`p-10 rounded-[2.5rem] bg-white border border-zinc-200/80 hover:border-indigo-500/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500 group ${service.colSpan}`}
               >
-                <div className="w-14 h-14 bg-zinc-100 rounded-full flex items-center justify-center text-zinc-900 mb-8 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                <div className="w-16 h-16 bg-zinc-50 border border-zinc-100 rounded-2xl flex items-center justify-center text-zinc-900 mb-8 group-hover:bg-indigo-600 group-hover:text-white group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm">
                   <service.icon size={24} strokeWidth={2} />
                 </div>
                 <h3 className="text-2xl font-display font-bold text-zinc-900 mb-3 tracking-tight">{service.title}</h3>
@@ -214,16 +218,16 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 onClick={() => setSelectedProduct(product)}
-                className="group flex flex-col text-left bg-zinc-50 rounded-3xl p-3 border border-zinc-200 hover:border-indigo-600 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                className="group flex flex-col text-left bg-white rounded-[2.5rem] p-4 border border-zinc-200/80 hover:border-indigo-500/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500"
               >
-                <div className="w-full aspect-[4/5] rounded-2xl bg-zinc-200 mb-6 overflow-hidden relative">
+                <div className="w-full aspect-[4/5] rounded-[2rem] bg-zinc-100 mb-6 overflow-hidden relative">
                   <img 
                     src={product.image} 
                     alt={product.title}
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full font-bold text-zinc-900 shadow-sm text-sm">
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-xl px-5 py-2.5 rounded-full font-bold text-zinc-900 shadow-[0_4px_20px_rgb(0,0,0,0.08)] text-sm border border-white/50">
                     {product.price}
                   </div>
                 </div>
@@ -281,17 +285,17 @@ export default function App() {
               transition={{ duration: 0.8 }}
               className="relative hidden lg:block"
             >
-              <div className="aspect-[4/5] rounded-[3rem] overflow-hidden relative shadow-2xl shadow-black/50 border border-white/10">
+              <div className="aspect-[4/5] rounded-[3rem] overflow-hidden relative shadow-[0_20px_50px_rgb(0,0,0,0.5)] border border-white/10 group">
                 <img 
                   src="https://images.unsplash.com/photo-1562564055-71e051d33c19?auto=format&fit=crop&q=80&w=1000" 
                   alt="Tiskový proces" 
-                  className="w-full h-full object-cover opacity-80"
+                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent"></div>
               </div>
               
-              <div className="absolute -bottom-10 -left-10 bg-white text-zinc-900 p-8 rounded-[2rem] shadow-2xl z-20 border border-zinc-100">
+              <div className="absolute -bottom-10 -left-10 bg-white text-zinc-900 p-8 rounded-[2.5rem] shadow-2xl z-20 border border-zinc-100">
                 <div className="text-6xl font-display font-black tracking-tighter mb-1 text-indigo-600">10+</div>
                 <div className="text-sm font-bold text-zinc-500 uppercase tracking-widest">Let zkušeností</div>
               </div>
@@ -336,32 +340,32 @@ export default function App() {
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-bold text-zinc-700 mb-2">Jméno a příjmení</label>
-                      <input type="text" id="name" className="w-full px-5 py-4 rounded-2xl border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="Jan Novák" />
+                      <label htmlFor="name" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Jméno a příjmení</label>
+                      <input type="text" id="name" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="Jan Novák" />
                     </div>
                     <div>
-                      <label htmlFor="company" className="block text-sm font-bold text-zinc-700 mb-2">Firma (volitelné)</label>
-                      <input type="text" id="company" className="w-full px-5 py-4 rounded-2xl border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="Název firmy" />
+                      <label htmlFor="company" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Firma (volitelné)</label>
+                      <input type="text" id="company" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="Název firmy" />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-bold text-zinc-700 mb-2">E-mail</label>
-                      <input type="email" id="email" className="w-full px-5 py-4 rounded-2xl border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="jan@novak.cz" />
+                      <label htmlFor="email" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">E-mail</label>
+                      <input type="email" id="email" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="jan@novak.cz" />
                     </div>
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-bold text-zinc-700 mb-2">Telefon</label>
-                      <input type="tel" id="phone" className="w-full px-5 py-4 rounded-2xl border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="068120228978" />
+                      <label htmlFor="phone" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Telefon</label>
+                      <input type="tel" id="phone" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="068120228978" />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-bold text-zinc-700 mb-2">Zpráva / Poptávka</label>
-                    <textarea id="message" rows={4} className="w-full px-5 py-4 rounded-2xl border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium resize-none" placeholder="Dobrý den, potřeboval bych potisknout..."></textarea>
+                    <label htmlFor="message" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Zpráva / Poptávka</label>
+                    <textarea id="message" rows={4} className="w-full px-6 py-5 rounded-[2rem] border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium resize-none" placeholder="Dobrý den, potřeboval bych potisknout..."></textarea>
                   </div>
 
-                  <button type="submit" className="w-full py-5 bg-indigo-600 text-white font-bold text-lg rounded-2xl hover:bg-indigo-700 transition-colors shadow-xl shadow-indigo-600/20">
+                  <button type="submit" className="w-full py-5 bg-indigo-600 text-white font-bold text-lg rounded-full hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-xl shadow-indigo-600/20">
                     Odeslat poptávku
                   </button>
                 </form>

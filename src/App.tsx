@@ -14,8 +14,11 @@ import {
   ArrowRight,
   Menu,
   X,
-  ShoppingCart
+  ShoppingCart,
+  Globe,
+  ChevronDown
 } from 'lucide-react';
+import { translations, Language } from './translations';
 
 const services = [
   { 
@@ -80,31 +83,79 @@ const products = [
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState<typeof products[0] | null>(null);
+  const [lang, setLang] = React.useState<Language>('CS');
+  const [isLangOpen, setIsLangOpen] = React.useState(false);
+  const languages: Language[] = ['CS', 'SK', 'DE', 'EN'];
+
+  const t = translations[lang];
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const company = (form.elements.namedItem('company') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const phone = (form.elements.namedItem('phone') as HTMLInputElement).value;
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+
+    const subject = encodeURIComponent(`Nová poptávka od: ${name || 'Neznámý'}`);
+    const body = encodeURIComponent(`Jméno: ${name}\nFirma: ${company}\nE-mail: ${email}\nTelefon: ${phone}\n\nZpráva:\n${message}`);
+    
+    window.location.href = `mailto:info@print-up.at?subject=${subject}&body=${body}`;
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] font-sans selection:bg-indigo-500 selection:text-white text-zinc-900">
       {/* Modern Floating Pill Navigation */}
       <div className="fixed w-full z-50 top-4 px-4 sm:px-6 lg:px-8 pointer-events-none">
-        <nav className="max-w-7xl mx-auto bg-white/80 backdrop-blur-2xl border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full px-4 sm:px-6 h-16 sm:h-20 flex justify-between items-center pointer-events-auto transition-all duration-300">
-          <div className="flex-shrink-0 flex items-center">
+        <nav className="max-w-7xl mx-auto bg-white/80 backdrop-blur-2xl border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full px-4 sm:px-6 h-20 sm:h-24 flex justify-between items-center pointer-events-auto transition-all duration-300">
+          <div 
+            className="flex-shrink-0 flex items-center cursor-pointer"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <img 
               src="https://lh3.googleusercontent.com/d/1eR0l1OLGVqhNxwRYDLMouGSFq1HouRVa" 
               alt="PrintUp Logo" 
-              className="h-10 sm:h-14 w-auto object-contain scale-110 origin-left drop-shadow-sm"
+              className="h-14 sm:h-20 w-auto object-contain scale-125 origin-left drop-shadow-sm"
               referrerPolicy="no-referrer"
             />
           </div>
           
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-1 bg-zinc-100/50 p-1.5 rounded-full border border-zinc-200/50">
-            <a href="#sluzby" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">Služby</a>
-            <a href="#cenik" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">Ceník</a>
-            <a href="#vyhody" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">Proč my</a>
+            <a href="#sluzby" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">{t.nav.services}</a>
+            <a href="#cenik" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">{t.nav.pricing}</a>
+            <a href="#vyhody" className="px-5 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-full transition-all">{t.nav.whyUs}</a>
           </div>
 
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center gap-2">
+            {/* Language Switcher */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-full transition-all"
+              >
+                <Globe size={18} />
+                {lang}
+                <ChevronDown size={16} className={`transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isLangOpen && (
+                <div className="absolute top-full right-0 mt-2 w-24 bg-white/95 backdrop-blur-xl border border-zinc-200/80 rounded-2xl shadow-xl overflow-hidden py-2 flex flex-col gap-1">
+                  {languages.map(l => (
+                    <button
+                      key={l}
+                      onClick={() => { setLang(l); setIsLangOpen(false); }}
+                      className={`w-full text-center px-4 py-2 text-sm font-bold hover:bg-zinc-50 transition-colors ${lang === l ? 'text-indigo-600 bg-indigo-50/50' : 'text-zinc-600'}`}
+                    >
+                      {l}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <a href="#kontakt" className="px-7 py-2.5 bg-zinc-900 text-white text-sm font-bold rounded-full hover:bg-indigo-600 hover:scale-105 transition-all shadow-lg shadow-zinc-900/20">
-              Poptat tisk
+              {t.nav.contact}
             </a>
           </div>
 
@@ -119,10 +170,23 @@ export default function App() {
         {/* Mobile Nav Dropdown */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 bg-white/95 backdrop-blur-2xl border border-white/50 p-4 rounded-[2rem] shadow-2xl pointer-events-auto flex flex-col gap-2 max-w-7xl mx-auto">
-            <a href="#sluzby" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">Služby</a>
-            <a href="#cenik" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">Ceník</a>
-            <a href="#vyhody" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">Proč my</a>
-            <a href="#kontakt" onClick={() => setIsMenuOpen(false)} className="block px-4 py-4 text-base font-bold bg-zinc-900 text-white text-center rounded-2xl mt-2 hover:bg-indigo-600 transition-colors shadow-lg">Kontakt</a>
+            <a href="#sluzby" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">{t.nav.services}</a>
+            <a href="#cenik" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">{t.nav.pricing}</a>
+            <a href="#vyhody" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3.5 text-base font-bold text-zinc-800 hover:bg-zinc-100 hover:text-zinc-900 rounded-2xl transition-colors">{t.nav.whyUs}</a>
+            
+            <div className="flex justify-center gap-2 py-3 border-t border-zinc-100 mt-2">
+              {languages.map(l => (
+                <button
+                  key={l}
+                  onClick={() => { setLang(l); setIsMenuOpen(false); }}
+                  className={`flex-1 py-2.5 rounded-2xl text-sm font-bold transition-colors ${lang === l ? 'bg-indigo-50 text-indigo-600' : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900'}`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+
+            <a href="#kontakt" onClick={() => setIsMenuOpen(false)} className="block px-4 py-4 text-base font-bold bg-zinc-900 text-white text-center rounded-2xl mt-2 hover:bg-indigo-600 transition-colors shadow-lg">{t.nav.contactMobile}</a>
           </div>
         )}
       </div>
@@ -140,24 +204,23 @@ export default function App() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 text-xs font-bold text-zinc-800 mb-8 border border-zinc-200 uppercase tracking-widest">
               <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-              Nejmodernější tiskové technologie
+              {t.hero.badge}
             </div>
             <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-display font-black tracking-tighter text-zinc-900 mb-6 leading-[0.85]">
-              TISKNETE <br />
+              {t.hero.title1} <br />
               <span className="text-indigo-600">
-                S PROFÍKY.
+                {t.hero.title2}
               </span>
             </h1>
             <p className="mt-8 text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
-              Od prémiových vizitek a firemních propisek až po velkoformátové bannery a textil. 
-              Kvalitně, rychle a s nekompromisním důrazem na detail.
+              {t.hero.desc}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 items-center">
               <a href="#kontakt" className="w-full sm:w-auto px-8 py-4 bg-zinc-900 text-white font-bold rounded-full hover:bg-indigo-600 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-lg shadow-xl shadow-zinc-900/20">
-                Nezávazná poptávka <ArrowRight size={20} />
+                {t.hero.btn1} <ArrowRight size={20} />
               </a>
               <a href="#cenik" className="w-full sm:w-auto px-8 py-4 bg-white text-zinc-900 font-bold rounded-full hover:bg-zinc-50 hover:scale-105 transition-all duration-300 border border-zinc-200 flex items-center justify-center text-lg shadow-sm">
-                Prohlédnout produkty
+                {t.hero.btn2}
               </a>
             </div>
           </motion.div>
@@ -169,9 +232,9 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-16 md:flex md:justify-between md:items-end">
             <div className="max-w-2xl">
-              <h2 className="text-5xl md:text-6xl font-display font-black tracking-tighter text-zinc-900 mb-4">Naše služby</h2>
+              <h2 className="text-5xl md:text-6xl font-display font-black tracking-tighter text-zinc-900 mb-4">{t.services.title}</h2>
               <p className="text-xl text-zinc-500 font-medium">
-                Moderní technologie nám umožňují potisknout téměř jakýkoliv materiál.
+                {t.services.desc}
               </p>
             </div>
           </div>
@@ -189,9 +252,9 @@ export default function App() {
                 <div className="w-16 h-16 bg-zinc-50 border border-zinc-100 rounded-2xl flex items-center justify-center text-zinc-900 mb-8 group-hover:bg-indigo-600 group-hover:text-white group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm">
                   <service.icon size={24} strokeWidth={2} />
                 </div>
-                <h3 className="text-2xl font-display font-bold text-zinc-900 mb-3 tracking-tight">{service.title}</h3>
+                <h3 className="text-2xl font-display font-bold text-zinc-900 mb-3 tracking-tight">{t.services.items[index].title}</h3>
                 <p className="text-zinc-500 font-medium leading-relaxed">
-                  {service.desc}
+                  {t.services.items[index].desc}
                 </p>
               </motion.div>
             ))}
@@ -203,9 +266,9 @@ export default function App() {
       <section id="cenik" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-16 text-center">
-            <h2 className="text-5xl md:text-6xl font-display font-black tracking-tighter text-zinc-900 mb-4">Oblíbené produkty</h2>
+            <h2 className="text-5xl md:text-6xl font-display font-black tracking-tighter text-zinc-900 mb-4">{t.products.title}</h2>
             <p className="text-xl text-zinc-500 font-medium max-w-2xl mx-auto">
-              Vyberte si z naší nabídky textilu. Ideální jako firemní merch nebo originální dárky.
+              {t.products.desc}
             </p>
           </div>
 
@@ -223,18 +286,18 @@ export default function App() {
                 <div className="w-full aspect-[4/5] rounded-[2rem] bg-zinc-100 mb-6 overflow-hidden relative">
                   <img 
                     src={product.image} 
-                    alt={product.title}
+                    alt={t.products.items[index].title}
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-xl px-5 py-2.5 rounded-full font-bold text-zinc-900 shadow-[0_4px_20px_rgb(0,0,0,0.08)] text-sm border border-white/50">
-                    {product.price}
+                    {t.products.items[index].price}
                   </div>
                 </div>
                 <div className="px-3 pb-4">
-                  <h3 className="text-2xl font-display font-bold text-zinc-900 mb-2 tracking-tight group-hover:text-indigo-600 transition-colors">{product.title}</h3>
+                  <h3 className="text-2xl font-display font-bold text-zinc-900 mb-2 tracking-tight group-hover:text-indigo-600 transition-colors">{t.products.items[index].title}</h3>
                   <p className="text-zinc-500 font-medium line-clamp-2">
-                    {product.desc}
+                    {t.products.items[index].desc}
                   </p>
                 </div>
               </motion.button>
@@ -255,11 +318,10 @@ export default function App() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-5xl md:text-7xl font-display font-black tracking-tighter mb-8 leading-[0.9]">
-                PROČ TISKNOUT <br/><span className="text-indigo-500">S NÁMI?</span>
+                {t.features.title1} <br/><span className="text-indigo-500">{t.features.title2}</span>
               </h2>
               <p className="text-zinc-400 text-xl mb-12 font-medium leading-relaxed">
-                Nejsme jen tiskárna. Jsme váš partner pro budování značky. 
-                Zakládáme si na preciznosti, dodržování termínů a osobním přístupu.
+                {t.features.desc}
               </p>
               <div className="space-y-8">
                 {features.map((feature, index) => (
@@ -270,8 +332,8 @@ export default function App() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-xl font-display font-bold mb-2 tracking-tight">{feature.title}</h4>
-                      <p className="text-zinc-400 font-medium">{feature.desc}</p>
+                      <h4 className="text-xl font-display font-bold mb-2 tracking-tight">{t.features.items[index].title}</h4>
+                      <p className="text-zinc-400 font-medium">{t.features.items[index].desc}</p>
                     </div>
                   </div>
                 ))}
@@ -297,7 +359,7 @@ export default function App() {
               
               <div className="absolute -bottom-10 -left-10 bg-white text-zinc-900 p-8 rounded-[2.5rem] shadow-2xl z-20 border border-zinc-100">
                 <div className="text-6xl font-display font-black tracking-tighter mb-1 text-indigo-600">10+</div>
-                <div className="text-sm font-bold text-zinc-500 uppercase tracking-widest">Let zkušeností</div>
+                <div className="text-sm font-bold text-zinc-500 uppercase tracking-widest">{t.features.exp}</div>
               </div>
             </motion.div>
           </div>
@@ -313,21 +375,21 @@ export default function App() {
               <div className="p-10 md:p-16 lg:col-span-2 flex flex-col justify-between relative overflow-hidden text-white">
                 <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-10 pointer-events-none"></div>
                 <div className="relative z-10">
-                  <h2 className="text-5xl md:text-6xl font-display font-black tracking-tighter mb-6">Pojďme na to.</h2>
+                  <h2 className="text-5xl md:text-6xl font-display font-black tracking-tighter mb-6">{t.contact.title}</h2>
                   <p className="text-zinc-400 mb-12 text-lg font-medium">
-                    Máte představu? My máme technologie. Napište nám, co potřebujete potisknout.
+                    {t.contact.desc}
                   </p>
                 </div>
                 
                 <div className="space-y-8 relative z-10">
                   <div className="group">
-                    <div className="text-sm text-zinc-500 font-bold uppercase tracking-wider mb-2">E-mail</div>
+                    <div className="text-sm text-zinc-500 font-bold uppercase tracking-wider mb-2">{t.contact.email}</div>
                     <a href="mailto:info@print-up.at" className="text-2xl font-display font-bold text-white hover:text-indigo-400 transition-colors flex items-center gap-3">
                       info@print-up.at <ArrowRight size={20} className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                     </a>
                   </div>
                   <div className="group">
-                    <div className="text-sm text-zinc-500 font-bold uppercase tracking-wider mb-2">Telefon</div>
+                    <div className="text-sm text-zinc-500 font-bold uppercase tracking-wider mb-2">{t.contact.phone}</div>
                     <a href="tel:068120228978" className="text-2xl font-display font-bold text-white hover:text-indigo-400 transition-colors flex items-center gap-3">
                       068120228978 <ArrowRight size={20} className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                     </a>
@@ -337,36 +399,36 @@ export default function App() {
 
               {/* Contact Form */}
               <div className="p-10 md:p-16 lg:col-span-3 bg-white m-2 rounded-[2.5rem] shadow-sm relative z-10">
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-6" onSubmit={handleFormSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Jméno a příjmení</label>
-                      <input type="text" id="name" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="Jan Novák" />
+                      <label htmlFor="name" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">{t.contact.nameLabel}</label>
+                      <input type="text" id="name" name="name" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder={t.contact.namePh} />
                     </div>
                     <div>
-                      <label htmlFor="company" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Firma (volitelné)</label>
-                      <input type="text" id="company" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="Název firmy" />
+                      <label htmlFor="company" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">{t.contact.companyLabel}</label>
+                      <input type="text" id="company" name="company" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder={t.contact.companyPh} />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">E-mail</label>
-                      <input type="email" id="email" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="jan@novak.cz" />
+                      <label htmlFor="email" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">{t.contact.email}</label>
+                      <input type="email" id="email" name="email" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder={t.contact.emailPh} />
                     </div>
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Telefon</label>
-                      <input type="tel" id="phone" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="068120228978" />
+                      <label htmlFor="phone" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">{t.contact.phone}</label>
+                      <input type="tel" id="phone" name="phone" className="w-full px-6 py-4 rounded-full border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium" placeholder="068120228978" />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">Zpráva / Poptávka</label>
-                    <textarea id="message" rows={4} className="w-full px-6 py-5 rounded-[2rem] border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium resize-none" placeholder="Dobrý den, potřeboval bych potisknout..."></textarea>
+                    <label htmlFor="message" className="block text-sm font-bold text-zinc-700 mb-2 ml-1">{t.contact.msgLabel}</label>
+                    <textarea id="message" name="message" rows={4} className="w-full px-6 py-5 rounded-[2rem] border border-zinc-200 bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all font-medium resize-none" placeholder={t.contact.msgPh}></textarea>
                   </div>
 
                   <button type="submit" className="w-full py-5 bg-indigo-600 text-white font-bold text-lg rounded-full hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-xl shadow-indigo-600/20">
-                    Odeslat poptávku
+                    {t.contact.submit}
                   </button>
                 </form>
               </div>
@@ -378,16 +440,19 @@ export default function App() {
       {/* Minimal Footer */}
       <footer className="bg-white border-t border-zinc-100 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center">
+          <div 
+            className="flex items-center cursor-pointer"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <img 
               src="https://lh3.googleusercontent.com/d/1eR0l1OLGVqhNxwRYDLMouGSFq1HouRVa" 
               alt="PrintUp Logo" 
-              className="h-16 w-auto object-contain scale-125 origin-left"
+              className="h-24 w-auto object-contain scale-150 origin-left"
               referrerPolicy="no-referrer"
             />
           </div>
           <div className="text-zinc-400 font-medium text-sm">
-            &copy; {new Date().getFullYear()} NB International Group s. r. o. Všechna práva vyhrazena.
+            &copy; {new Date().getFullYear()} NB International Group s. r. o. {t.footer}
           </div>
         </div>
       </footer>
@@ -423,27 +488,29 @@ export default function App() {
             <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
               <div className="mb-6">
                 <span className="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 font-bold rounded-full text-sm mb-4 border border-indigo-100">
-                  {selectedProduct.price}
+                  {t.products.items[products.indexOf(selectedProduct)].price}
                 </span>
-                <h3 className="text-3xl font-display font-black tracking-tight text-zinc-900 mb-4">{selectedProduct.title}</h3>
+                <h3 className="text-3xl font-display font-black tracking-tight text-zinc-900 mb-4">{t.products.items[products.indexOf(selectedProduct)].title}</h3>
                 <p className="text-zinc-500 font-medium leading-relaxed">
-                  {selectedProduct.desc}
+                  {t.products.items[products.indexOf(selectedProduct)].desc}
                 </p>
               </div>
               
               <a 
                 href="#kontakt" 
                 onClick={() => {
+                  const productTitle = t.products.items[products.indexOf(selectedProduct)].title;
+                  const productPrice = t.products.items[products.indexOf(selectedProduct)].price;
                   setSelectedProduct(null);
                   const msgInput = document.getElementById('message') as HTMLTextAreaElement;
                   if (msgInput) {
-                    msgInput.value = `Dobrý den, měl/a bych zájem o: ${selectedProduct.title} (${selectedProduct.price})`;
+                    msgInput.value = `${t.modal.msgPrefix} ${productTitle} (${productPrice})`;
                   }
                 }}
                 className="w-full py-4 bg-zinc-900 text-white font-bold rounded-2xl hover:bg-indigo-600 transition-colors shadow-xl shadow-zinc-900/10 flex items-center justify-center gap-2"
               >
                 <ShoppingCart size={20} />
-                Poptat produkt
+                {t.modal.request}
               </a>
             </div>
           </motion.div>

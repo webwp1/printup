@@ -115,7 +115,7 @@ export default function App() {
           >
             <img 
               src="https://lh3.googleusercontent.com/d/1eR0l1OLGVqhNxwRYDLMouGSFq1HouRVa" 
-              alt="PrintUp Logo" 
+              alt="Printup Logo" 
               className="h-14 sm:h-20 w-auto object-contain scale-125 origin-left drop-shadow-sm"
               referrerPolicy="no-referrer"
             />
@@ -446,7 +446,7 @@ export default function App() {
           >
             <img 
               src="https://lh3.googleusercontent.com/d/1eR0l1OLGVqhNxwRYDLMouGSFq1HouRVa" 
-              alt="PrintUp Logo" 
+              alt="Printup Logo" 
               className="h-24 w-auto object-contain scale-150 origin-left"
               referrerPolicy="no-referrer"
             />
